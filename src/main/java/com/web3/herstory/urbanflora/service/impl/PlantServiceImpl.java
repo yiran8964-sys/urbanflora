@@ -55,7 +55,7 @@ public class PlantServiceImpl implements PlantService {
             BeanUtils.copyProperties(p, vo);
 
             //核心逻辑
-            vo.setMine(currentUser != null && currentUser.equals(p.getOwner()));
+            vo.setMine(currentUser != null && currentUser.equalsIgnoreCase(p.getOwner()));
 
             return vo;
         }).collect(Collectors.toList());
