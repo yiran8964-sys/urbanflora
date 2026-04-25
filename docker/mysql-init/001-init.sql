@@ -8,8 +8,7 @@ CREATE TABLE IF NOT EXISTS plants (
     latitude DOUBLE NOT NULL DEFAULT 0,
     longitude DOUBLE NOT NULL DEFAULT 0,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id),
-    UNIQUE KEY uk_plants_token_id (token_id)
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS records (
