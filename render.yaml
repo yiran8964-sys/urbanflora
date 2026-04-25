@@ -1,0 +1,29 @@
+services:
+  - name: urban-flora
+    type: web
+    runtime: docker
+    plan: starter
+    region: singapore
+    autoDeployTrigger: commit
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    disk:
+      name: app-data
+      mountPath: /app/data
+      sizeGB: 1
+    envVars:
+      - key: APP_NAME
+        value: urban-flora
+      - key: UPLOAD_DIR
+        value: /app/data/uploads
+      - key: MYSQL_DATA_DIR
+        value: /app/data/mysql
+      - key: MYSQL_DATABASE
+        value: urban_flora
+      - key: MYSQL_USER
+        value: urban_flora
+      - key: MYSQL_PASSWORD
+        value: Abcd123456
+      - key: MYSQL_ROOT_PASSWORD
+        value: Abcd123456
