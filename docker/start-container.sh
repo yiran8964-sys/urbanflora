@@ -19,6 +19,14 @@ mkdir -p "$UPLOAD_DIR" "$MYSQL_DATA_DIR" "$MYSQL_RUN_DIR"
 chown -R mysql:mysql "$MYSQL_DATA_DIR"
 chown -R mysql:mysql "$MYSQL_RUN_DIR"
 
+mysql_client() {
+  if mariadb --socket="$MYSQL_SOCKET" -uroot -e "SELECT 1" >/dev/null 2>&1; then
+    mariadb --socket="$MYSQL_SOCKET" -uroot "$@"
+  else
+    mariadb --socket="$MYSQL_SOCKET" -uroot -p"$MYSQL_ROOT_PASSWORD" "$@"
+  fi
+}
+
 if [ "$UPLOAD_DIR" != "$SEED_UPLOAD_DIR" ] && [ -d "$SEED_UPLOAD_DIR" ] && [ -z "$(ls -A "$UPLOAD_DIR" 2>/dev/null)" ]; then
   cp -R "$SEED_UPLOAD_DIR"/. "$UPLOAD_DIR"/
 fi
@@ -52,7 +60,7 @@ until mariadb-admin --socket="$MYSQL_SOCKET" ping >/dev/null 2>&1; do
   sleep 1
 done
 
-mariadb --socket="$MYSQL_SOCKET" <<SQL
+mysql_client <<SQL
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${MYSQL_PASSWORD}';
@@ -67,7 +75,7 @@ SQL
 if [ -d /app/docker/mysql-init ]; then
   for sql_file in /app/docker/mysql-init/*.sql; do
     [ -f "$sql_file" ] || continue
-    mariadb --socket="$MYSQL_SOCKET" "$MYSQL_DATABASE" < "$sql_file"
+    mysql_client "$MYSQL_DATABASE" < "$sql_file"
   done
 fi
 
