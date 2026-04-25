@@ -16,4 +16,7 @@ public class PlantCreateDTO {
 
     @NotBlank(message = "图片URL不能为空")
     private String imageUrl;
+
+    private double latitude;
+    private double longitude;
 }

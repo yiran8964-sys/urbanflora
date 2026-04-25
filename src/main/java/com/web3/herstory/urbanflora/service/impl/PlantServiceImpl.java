@@ -1,6 +1,5 @@
 package com.web3.herstory.urbanflora.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.web3.herstory.urbanflora.entity.Plant;
 import com.web3.herstory.urbanflora.entity.dto.PlantCreateDTO;
 import com.web3.herstory.urbanflora.entity.vo.PlantVO;
@@ -25,12 +24,6 @@ public class PlantServiceImpl implements PlantService {
         Long tokenId = dto.getTokenId();
         if (tokenId == null) {
             throw new BusinessException("tokenId不能为空");
-        }
-        QueryWrapper<Plant> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("token_id", dto.getTokenId());
-        Plant queryPlant = plantMapper.selectOne(queryWrapper);
-        if (queryPlant != null) {
-            throw new BusinessException("已经插入相同的tokenId，请勿重复插入");
         }
 
         Plant plant = new Plant();

@@ -16,6 +16,7 @@ public class Plant {
     private String location;
     private String owner;
     private String imageUrl;
-
+    private double latitude;
+    private double longitude;
     private LocalDateTime createdAt;
 }

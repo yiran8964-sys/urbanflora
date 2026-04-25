@@ -17,4 +17,6 @@ public class PlantVO {
 
     // 👉 自定义字段
     private boolean isMine;
+    private double latitude;
+    private double longitude;
 }
