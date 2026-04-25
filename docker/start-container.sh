@@ -9,12 +9,15 @@ MYSQL_PASSWORD="${MYSQL_PASSWORD:-Abcd123456}"
 MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD:-Abcd123456}"
 MYSQL_DATA_DIR="${MYSQL_DATA_DIR:-/var/lib/mysql}"
 MYSQL_SOCKET="/tmp/mysql.sock"
+MYSQL_RUN_DIR="${MYSQL_RUN_DIR:-/run/mysqld}"
+MYSQL_PID_FILE="${MYSQL_PID_FILE:-$MYSQL_RUN_DIR/mysqld.pid}"
 UPLOAD_DIR="${UPLOAD_DIR:-/app/uploads}"
 SEED_UPLOAD_DIR="/app/uploads"
 APP_PORT="${PORT:-8080}"
 
-mkdir -p "$UPLOAD_DIR" "$MYSQL_DATA_DIR"
+mkdir -p "$UPLOAD_DIR" "$MYSQL_DATA_DIR" "$MYSQL_RUN_DIR"
 chown -R mysql:mysql "$MYSQL_DATA_DIR"
+chown -R mysql:mysql "$MYSQL_RUN_DIR"
 
 if [ "$UPLOAD_DIR" != "$SEED_UPLOAD_DIR" ] && [ -d "$SEED_UPLOAD_DIR" ] && [ -z "$(ls -A "$UPLOAD_DIR" 2>/dev/null)" ]; then
   cp -R "$SEED_UPLOAD_DIR"/. "$UPLOAD_DIR"/
@@ -29,7 +32,8 @@ mariadbd \
   --datadir="$MYSQL_DATA_DIR" \
   --bind-address="$MYSQL_HOST" \
   --port="$MYSQL_PORT" \
-  --socket="$MYSQL_SOCKET" &
+  --socket="$MYSQL_SOCKET" \
+  --pid-file="$MYSQL_PID_FILE" &
 MYSQL_PID=$!
 
 cleanup() {
