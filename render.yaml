@@ -19,6 +19,10 @@ services:
         value: http://localhost:8081,https://urbanflora.vercel.app
       - key: UPLOAD_DIR
         value: /app/data/uploads
+      - key: APP_MAX_FILE_SIZE
+        value: 50MB
+      - key: APP_MAX_REQUEST_SIZE
+        value: 60MB
       - key: MYSQL_DATA_DIR
         value: /app/data/mysql
       - key: MYSQL_DATABASE
