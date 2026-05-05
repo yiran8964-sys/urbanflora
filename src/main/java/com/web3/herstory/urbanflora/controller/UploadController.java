@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,10 +34,7 @@ public class UploadController {
 
         file.transferTo(dest);
 
-        String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/uploads/")
-                .path(fileName)
-                .toUriString();
+        String fileUrl = "/uploads/" + fileName;
 
         return Result.success(fileUrl);
     }
