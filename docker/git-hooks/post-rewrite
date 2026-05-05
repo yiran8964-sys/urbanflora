@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+
+if [ "${1:-}" != "rebase" ]; then
+  exit 0
+fi
+
+REPO_DIR=$(CDPATH= cd -- "$(dirname "$0")/../.." && pwd)
+
+exec sh "$REPO_DIR/docker/deploy-update.sh"

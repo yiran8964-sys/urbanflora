@@ -37,3 +37,7 @@ build/
 
 #OS
 .DS_Store
+
+# Deployment
+.env
+data/
